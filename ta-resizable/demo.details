@@ -1,13 +1,12 @@
-Everything before the line containing only '---' will not be parsed
-
+/*
 ---
  name: Autogrow+resizable <textarea>
  description: Add resizable grippr to jQ autogrow plugin
  authors:
-   - Pavl Zhytko
+   - Pavel Zhytko
  resources:
-    - https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js
+   - /js/empty.js
+   - https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js
  normalize_css: yes
  ...
-
-Everything after the line containing only '...' will not be parsed 
+*/
