@@ -6,8 +6,7 @@ Everything before the line containing only '---' will not be parsed
  authors:
    - Pavl Zhytko
  resources:
-#   - http://some.url.com/some/file.js
-#   - http://other.url.com/other_filename.css
+    - https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js
  normalize_css: yes
  ...
 
