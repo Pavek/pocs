@@ -1,12 +1,12 @@
 /*
 ---
- name: Autogrow+resizable <textarea>
- description: Add resizable grippr to jQ autogrow plugin
- authors:
-   - Pavel Zhytko
- resources:
-   - /js/empty.js
-   - https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js
- normalize_css: yes
- ...
+name: Autogrow+resizable <textarea>
+description: Add resizable grippr to jQ autogrow plugin
+authors:
+  - Pavel Zhytko
+resources:
+  - /js/empty.js
+  - https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js
+normalize_css: yes
+...
 */
