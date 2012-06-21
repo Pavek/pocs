@@ -1,12 +1,14 @@
 $(function() {
     $('textarea').autoResize({
         onResize: function(h) {
-            $('#ta-container').height(h + 5);
+            //$('#ta-container').height(h + 5);
             $('#content').css('margin-bottom', h + 10);
         },
         animate: false,
         extraSpace: 10,
-        limit: 75
+        limit: 75,
+        gripper: '#gripper',
+        parent: '#container'
     });
 });
 
@@ -32,9 +34,60 @@ $(function() {
         // Only textarea's auto-resize:
         this.filter('textarea').each(function() {
 
+            var textarea = $(this);
+            var ta_h = textarea.outerHeight();
+            var gripper = $(settings.gripper).
+                wrap('<div id="wrapper">').
+                css({backgroundColor: 'grey'});
+            $('#wrapper').css({
+                /*border: '1px dotted cyan',*/
+                margin: '0 0 ' + ta_h + 'px 0',
+                height: settings.limit - ta_h + 'px',
+                position: 'relative',
+                bottom: ta_h + 'px'
+
+            });
+            
+            var cur_ta_h, top = null;
+            gripper.draggable({
+                axis : 'y',
+                containment: "parent",
+                grid: [0, 13],
+                start: function (ev, ui) {
+                    $(settings.parent).css({cursor: 'row-resize'});
+                    cur_ta_h = textarea.outerHeight();
+                    console.log('START: h=' + cur_ta_h);
+                },
+                stop: function (ev, ui) {
+                    $(settings.parent).css({cursor: 'default'});
+                },
+                drag: function (ev, ui) {
+                    if (top === null) {
+                        top = ui.position.top;
+                        console.log('DRAG: init_t=' + top);
+                    }
+                    else if (top !== ui.position.top) {
+                        var diff = top - ui.position.top,
+                            new_h = cur_ta_h + diff;
+    
+                        console.log('DRAG: h=' + cur_ta_h + ', diff=' + diff + ', new_h=' + new_h);
+    
+                        top = ui.position.top;
+                        cur_ta_h = new_h;
+    
+                        textarea.height(new_h);
+                        settings.onResize.call(this, new_h);
+                        console.log('DRAG: set new_h=' + textarea.outerHeight());
+                    }
+                }
+            });
+            
+            //zIndex: '-1'
+            //console.log(settings.limit - $(this).outerHeight() + 'px');
+            
             // Get rid of scrollbars and disable WebKit resizing:
             // pag: '\n' insertion doesn't work without 'white-space:pre', see: http://www.fourmilab.ch/fourmilog/archives/2005-04/000510.html
-            var textarea = $(this).css({
+            textarea.css({
                 resize: 'none',
                 'overflow-y': 'hidden',
                 'white-space': 'pre'
@@ -43,10 +96,10 @@ $(function() {
                 // Cache original height, for use later:
                 // pag: get height from css if element is hidden originally (as in our case).
                 // pag: assuming box-sizing: border-box (i.e. css height includes paddings)
-                origHeight = textarea.innerHeight() || parseInt(textarea.css('height'), 10),
+                origHeight = textarea.innerHeight() || parseInt(textarea.css('height'), 10);
 
                 // Need clone of textarea, hidden off screen:
-                clone = (function() {
+                var clone = (function() {
 
                     // Properties which may effect space taken up by chracters:
                     var props = ['height', 'width', 'lineHeight', 'textDecoration', 'letterSpacing'],
@@ -119,4 +172,4 @@ $(function() {
         return this;
     };
 
-})(jQuery); 
+})(jQuery);
